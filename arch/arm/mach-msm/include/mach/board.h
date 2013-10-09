@@ -537,9 +537,6 @@ struct msm_fb_platform_data {
 	int (*allow_set_offset)(void);
 	char prim_panel_name[PANEL_NAME_MAX_LEN];
 	char ext_panel_name[PANEL_NAME_MAX_LEN];
-#ifdef CONFIG_UPDATE_LCDC_LUT
-	int (*update_lcdc_lut)(void);
-#endif
 };
 
 struct msm_hdmi_platform_data {
@@ -553,6 +550,7 @@ struct msm_hdmi_platform_data {
 	int (*gpio_config)(int on);
 	int (*init_irq)(void);
 	bool (*check_hdcp_hw_support)(void);
+	bool (*source)(void);
 	bool is_mhl_enabled;
 };
 

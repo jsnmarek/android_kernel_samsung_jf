@@ -21,8 +21,22 @@
 #include <linux/cpumask.h>
 #include <asm/div64.h>
 
-#define CPUFREQ_NAME_LEN 16
+#define CPUFREQ_NAME_LEN 17
 
+extern int GLOBALKT_MIN_FREQ_LIMIT;
+extern int GLOBALKT_MAX_FREQ_LIMIT;
+
+#define FREQ_TABLE_SIZE		45
+#define FREQ_TABLE_SIZE_OFFSET	8
+#define FREQ_STEPS		26
+
+#define MAX_VDD_SC		1500000 /* uV */
+#define MIN_VDD_SC		700000 /* uV */
+#define MAX_VDD_MEM_DIG		1250000 /* uV */
+
+#define USER_MIN_START	1
+#define USER_MAX_START	2
+extern unsigned int kthermal_limit;
 
 /*********************************************************************
  *                     CPUFREQ NOTIFIER INTERFACE                    *
@@ -113,6 +127,8 @@ struct cpufreq_policy {
 	struct kobject		kobj;
 	struct completion	kobj_unregister;
 };
+extern struct cpufreq_policy trmlpolicy[10];
+extern unsigned int kt_freq_control[10];
 
 #define CPUFREQ_ADJUST		(0)
 #define CPUFREQ_INCOMPATIBLE	(1)
@@ -421,9 +437,6 @@ extern struct cpufreq_governor cpufreq_gov_conservative;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE)
 extern struct cpufreq_governor cpufreq_gov_interactive;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_interactive)
-#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTELLIDEMAND)
-extern struct cpufreq_governor cpufreq_gov_intellidemand;
-#define CPUFREQ_DEFAULT_GOVERNOR        (&cpufreq_gov_intellidemand)
 #endif
 
 
